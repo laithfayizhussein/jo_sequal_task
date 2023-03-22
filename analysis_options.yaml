@@ -1,0 +1,22 @@
+
+include: package:flutter_lints/flutter.yaml
+analyzer:
+  # strong-mode:
+  #   implicit-casts: true
+  errors:
+    undefined_prefixed_name: ignore
+    
+linter:
+  rules:
+    avoid_print: true # Uncomment to disable the `avoid_print` rule
+    prefer_single_quotes: false # Uncomment to enable the `prefer_single_quotes` rule
+    prefer_relative_imports: true
+    avoid_returning_null: true
+    flutter_style_todos: false
+    prefer_foreach: true
+    file_names: true
+    implementation_imports: false
+    unnecessary_this: false
+    require_trailing_commas: true
+    unnecessary_const: true
+
