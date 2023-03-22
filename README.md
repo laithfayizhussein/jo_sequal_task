@@ -8,10 +8,10 @@ This task take 2 days almost .
 
 theres 4 pages
 
-# Home page for rendering the whole paginating api images
-# Detailes screen for Image Detailes , Download image , add to favorite , 
-# Search screen for search by group of image name 
-# Favorite Screen for rendering the Favorite image list 
+- Home page for rendering the whole paginating api images
+- Detailes screen for Image Detailes , Download image , add to favorite , 
+- Search screen for search by group of image name 
+- Favorite Screen for rendering the Favorite image list 
 
 
 
