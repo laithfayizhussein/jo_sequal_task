@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class Style {
-  //themes
   static const Color accent = Color(0xff003C73);
   static const Color secondary = Color(0xff2D4A8A);
   static const Color tertiary = Color(0xff19ACFF);
@@ -15,12 +14,6 @@ class Style {
   static const Color line = Color(0xffECECEC);
   static const Color confirmation = Color(0xff3EC585);
   static const Color error = Color(0xffe27070);
-
-  //themes
-
-  /// Controll the app bar theme from here
-
-  /// Controll the main theme from here
 
   static ThemeData mainTheme = ThemeData(
     appBarTheme: const AppBarTheme(

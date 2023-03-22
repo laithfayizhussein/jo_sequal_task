@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -30,7 +28,6 @@ class WallpaperApiNotifire extends StateNotifier<List<Images>> {
       );
       images = Images.fromJson(response.data);
       debugPrint('images: $images');
-      log('images: $images');
     } catch (e) {
       debugPrint('ImagesERROE: $e');
     }
@@ -48,7 +45,6 @@ class WallpaperApiNotifire extends StateNotifier<List<Images>> {
       );
       photo = Photo.fromJson(response.data);
       debugPrint('image: $photo');
-      log('image: $photo');
     } catch (e) {
       debugPrint('ImageERROE: $e');
     }
@@ -60,12 +56,12 @@ class WallpaperApiNotifire extends StateNotifier<List<Images>> {
 
     try {
       final response = await dioClient.get(
-        '${Endpoints.searchImageUrl}?query=$query',
+        Endpoints.searchImageUrl,
         options: Options(headers: header),
+        queryParameters: {'query': query},
       );
       search = Images.fromJson(response.data);
       debugPrint('searchImagesApi: $search');
-      log('searchImagesApi: $search');
     } catch (e) {
       debugPrint('searchERROE: $e');
     }

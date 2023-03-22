@@ -11,8 +11,10 @@ class SearchScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = GlobalKey<FormState>();
-    final nameController = useTextEditingController();
-    final searchImageData = ref.watch(searchImageProvider(nameController.text));
+    final searchController = useTextEditingController();
+    final searchImageData =
+        ref.watch(searchImageProvider(searchController.text));
+
     final renderImages = useState(false);
 
     Future<void>? _search() {
@@ -37,14 +39,16 @@ class SearchScreen extends HookConsumerWidget {
           Form(
             key: formKey,
             child: TextFormField(
-              // validator if needed
+              // validator for empty field  case
               validator: (value) {
-                if (true) {}
+                if (value?.isEmpty ?? true) {
+                  return 'Field Cant be Empty ';
+                }
                 return null;
               },
-              controller: nameController,
+              controller: searchController,
               keyboardType: TextInputType.text,
-              autofocus: true,
+              autofocus: renderImages.value ? false : true,
               decoration: const InputDecoration(
                 hintText: ('write some thing like Nature, Tigers, People'),
                 prefixIcon: Icon(
@@ -53,11 +57,10 @@ class SearchScreen extends HookConsumerWidget {
               ),
               onFieldSubmitted: (value) {
                 _search();
-
-                //handel search provider
               },
             ),
           ),
+          //* button
           TextButton(
             onPressed: () {
               _search();
@@ -72,20 +75,20 @@ class SearchScreen extends HookConsumerWidget {
               style: TextStyle(color: Style.black),
             ),
           ),
+          //  render grid when submit
           renderImages.value
               ? searchImageData.when(
                   error: ((error, stackTrace) => TextButton(
                         child: const Text('try Again'),
-                        onPressed: () => ref
-                            .refresh(searchImageProvider(nameController.text)),
+                        onPressed: () => ref.refresh(
+                          searchImageProvider(searchController.text),
+                        ),
                       )),
                   loading: (() => const Center(
                         child: CircularProgressIndicator(),
                       )),
                   data: ((data) {
                     renderImages.value = false;
-
-                    debugPrint('datadatadatadata: $data');
                     return Expanded(
                       child: GridView.builder(
                         padding: const EdgeInsets.all(16),

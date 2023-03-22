@@ -60,7 +60,7 @@ class DetailesScreen extends StatelessWidget {
                     data?.alt ?? '',
                     style: const TextStyle(color: Style.secondary),
                   ),
-                  // buttons 
+                  // buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -90,6 +90,11 @@ class DetailesScreen extends StatelessWidget {
                                   imageUrl: data?.src?.tiny ?? '',
                                   imageId: imageId,
                                 );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Add To favorite Screen'),
+                              ),
+                            );
                           },
                         ),
                       ),

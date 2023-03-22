@@ -39,8 +39,6 @@ class MyApp extends StatelessWidget {
           theme: Style.mainTheme,
           routeInformationParser: appRouter.defaultRouteParser(),
           routerDelegate: appRouter.delegate(),
-          // darkTheme: Style.darkTheme(context),
-          // showSemanticsDebugger: false,
         );
       },
     );

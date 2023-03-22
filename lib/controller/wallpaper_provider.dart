@@ -8,7 +8,7 @@ import '../services/api/wallpaper_api.dart';
 final singleImageProvider = FutureProvider.family<Photo?, int>((ref, id) async {
   final response =
       await ref.watch(wallpaperApiNotifierProvider.notifier).singleImageApi(id);
-  debugPrint('response: $response');
+  debugPrint('singleImageProvider: $response');
 
   return response;
 });
@@ -18,7 +18,7 @@ final searchImageProvider =
   final response = await ref
       .watch(wallpaperApiNotifierProvider.notifier)
       .searchImagesApi(query);
-  debugPrint('response: $response');
+  debugPrint('searchImageProvider: $response');
 
   return response;
 });

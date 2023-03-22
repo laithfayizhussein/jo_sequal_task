@@ -17,7 +17,7 @@ class HomeScreen extends HookConsumerWidget {
     debugPrint('rebuild');
     final PagingController<int, Photo> pagingController = PagingController(
       firstPageKey: 1,
-    ); // from the package take int and ProductsData(product_detailes)
+    );
     String? nextPage;
 
     useEffect(() {
@@ -29,14 +29,10 @@ class HomeScreen extends HookConsumerWidget {
         wallpaperImages.imagesApi(pageKey).then(
           (value) {
             nextPage = value?.nextPage ?? '';
-            debugPrint('nextPage$nextPage');
             if (nextPage != null) {
               pagingController.appendPage(value?.photos ?? [], ++pageKey);
-
-              debugPrint('appendPage${value?.photos}');
             } else {
               pagingController.appendLastPage(value?.photos ?? []);
-              debugPrint('appendLastPage');
             }
           },
         );
@@ -85,7 +81,6 @@ class HomeScreen extends HookConsumerWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: 00,
 
-                // maxCrossAxisExtent: maxCrossAxisExtent,
               ),
               pagingController: pagingController,
               builderDelegate: PagedChildBuilderDelegate<Photo>(

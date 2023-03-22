@@ -2,15 +2,16 @@
 
 this is wallpaper app  responsable for render images from an api the app have  many screen home screen for the whole and search screen for finding image and favorite screen for favorite image
 
-## Getting Started
+## Finished Task 
 
-This project is a starting point for a Flutter application.
+This task take 2 days almost .
 
-A few resources to get you started if this is your first Flutter project:
+theres 4 pages
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+# Home page for rendering the whole paginating api images
+# Detailes screen for Image Detailes , Download image , add to favorite , 
+# Search screen for search by group of image name 
+# Favorite Screen for rendering the Favorite image list 
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
