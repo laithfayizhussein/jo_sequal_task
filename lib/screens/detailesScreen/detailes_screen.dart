@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_downloader/image_downloader.dart';
-import '../../style.dart';
+import '../../style/style.dart';
 import '../../controller/favorite_image.dart';
 import '../../controller/wallpaper_provider.dart';
 
@@ -18,6 +18,11 @@ class DetailesScreen extends StatelessWidget {
       appBar: AppBar(title: Text(title)),
       body: Consumer(
         builder: ((context, ref, child) {
+          // future provider for check if the image in the favorite screen
+          final checkFavoriteFromDbui = ref.watch(checkFavoriteFromDb(imageId));
+          //* stateProvider with auto dispose to change the current value for icon button
+          final checkFavoriteButton = ref.watch(isImageFavoriteProvider);
+          // future provider to render the data
           final singleImage = ref.watch(singleImageProvider(imageId));
           return singleImage.when(
             error: ((error, stackTrace) => TextButton(
@@ -29,9 +34,6 @@ class DetailesScreen extends StatelessWidget {
                 )),
             data: (data) {
               // render the data
-              final checkFavoriteButton =
-                  ref.watch(isImageFavdoriteProvider(imageId));
-              debugPrint('test: $checkFavoriteButton');
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +74,8 @@ class DetailesScreen extends StatelessWidget {
                         child: IconButton(
                           iconSize: 20,
                           icon: Icon(
-                            checkFavoriteButton == true
+                            checkFavoriteFromDbui.asData?.value == true ||
+                                    checkFavoriteButton == true
                                 ? Icons.favorite
                                 : Icons.favorite_border,
                             color: Style.secondary,
@@ -80,15 +83,15 @@ class DetailesScreen extends StatelessWidget {
                           onPressed: () {
                             ref
                                 .read(
-                                  isImageFavdoriteProvider(imageId).notifier,
+                                  isImageFavoriteProvider.notifier,
                                 )
                                 .state = true;
 
                             ref
-                                .read(favoriteImageNotifireProvider.notifier)
+                                .watch(favoriteImageNotifireProvider.notifier)
                                 .addFavorite(
                                   imageUrl: data?.src?.tiny ?? '',
-                                  imageId: imageId,
+                                  id: imageId,
                                 );
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../widget/error_loading.dart';
+import '../../widget/loading_spinner.dart';
+import 'widget/search_form_field.dart';
+import '../../models/images_model.dart';
+import 'widget/search_result.dart';
 import '../../controller/wallpaper_provider.dart';
-import '../../style.dart';
-import '../../widget/image_card.dart';
+import '../../style/style.dart';
 
 class SearchScreen extends HookConsumerWidget {
   const SearchScreen({super.key});
@@ -14,16 +18,15 @@ class SearchScreen extends HookConsumerWidget {
     final searchController = useTextEditingController();
     final searchImageData =
         ref.watch(searchImageProvider(searchController.text));
-
-    final renderImages = useState(false);
-
-    Future<void>? _search() {
-      final isValid = formKey.currentState!.validate();
-      debugPrint('isValid: $isValid');
-      if (isValid) {
-        renderImages.value = true;
-      } else {}
-      return null;
+    // if the user search for any key word  images will be shown other wise nothing will not
+    final isCorrectSearch = useState(false);
+    // this method to check if the form is validate or not
+    void _search() {
+      if (formKey.currentState!.validate()) {
+        updateRenderImageState(isCorrectSearch: isCorrectSearch, state: true);
+      } else {
+        return;
+      }
     }
 
     return Scaffold(
@@ -38,36 +41,28 @@ class SearchScreen extends HookConsumerWidget {
         children: [
           Form(
             key: formKey,
-            child: TextFormField(
-              // validator for empty field  case
-              validator: (value) {
+            child: SearchTextFormField(
+              searchController: searchController,
+              renderImages: isCorrectSearch.value,
+              onSearch: _search,
+              validator: (String? value) {
                 if (value?.isEmpty ?? true) {
                   return 'Field Cant be Empty ';
+                } else {
+                  return null;
                 }
-                return null;
-              },
-              controller: searchController,
-              keyboardType: TextInputType.text,
-              autofocus: renderImages.value ? false : true,
-              decoration: const InputDecoration(
-                hintText: ('write some thing like Nature, Tigers, People'),
-                prefixIcon: Icon(
-                  Icons.search,
-                ),
-              ),
-              onFieldSubmitted: (value) {
-                _search();
               },
             ),
           ),
           //* button
+
           TextButton(
             onPressed: () {
               _search();
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(
-                Style.secondary,
+                Style.tertiary,
               ),
             ),
             child: const Text(
@@ -76,42 +71,35 @@ class SearchScreen extends HookConsumerWidget {
             ),
           ),
           //  render grid when submit
-          renderImages.value
+          isCorrectSearch.value
               ? searchImageData.when(
-                  error: ((error, stackTrace) => TextButton(
-                        child: const Text('try Again'),
+                  error: ((error, stackTrace) => ErrorLoading(
                         onPressed: () => ref.refresh(
                           searchImageProvider(searchController.text),
                         ),
                       )),
-                  loading: (() => const Center(
-                        child: CircularProgressIndicator(),
-                      )),
+                  loading: (() => const LoadingSpinner()),
                   data: ((data) {
-                    renderImages.value = false;
-                    return Expanded(
-                      child: GridView.builder(
-                        padding: const EdgeInsets.all(16),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 20,
-                          childAspectRatio: 1,
-                          mainAxisSpacing: 20,
-                        ),
-                        itemCount: data?.photos?.length,
-                        itemBuilder: (context, index) {
-                          return ImageCard(
-                            imageUrl: data?.photos?[index].src?.tiny ?? '',
-                          );
-                        },
-                      ),
+                    updateRenderImageState(
+                      state: false,
+                      isCorrectSearch: isCorrectSearch,
+                    );
+                    return SearchResult(
+                      searchResult: data ?? const Images(),
                     );
                   }),
                 )
-              : const SizedBox(),
+              : const Center(),
         ],
       ),
     );
+  }
+
+// this method responsible  about change the  state
+  void updateRenderImageState({
+    required bool state,
+    required ValueNotifier<bool> isCorrectSearch,
+  }) {
+    isCorrectSearch.value = state;
   }
 }

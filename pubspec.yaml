@@ -1,5 +1,5 @@
 name: jo_sequal_task
-description: this is wallpaper app  responsable for render images from an api the app have  many screen home screen for the whole and search screen for finding image and favorite screen for favorite image
+description: this is wallpaper app  responsible for render images from an api the app have  many screen home screen for the whole and search screen for finding image and favorite screen for favorite image
 
 
 
@@ -52,6 +52,8 @@ dependencies:
   json_serializable: ^6.6.1
   intl: ^0.18.0
   image_downloader:
+  path: ^1.8.2
+  sqflite: ^2.2.6
 
 dev_dependencies:
   flutter_launcher_icons: ^0.12.0
@@ -84,6 +86,8 @@ flutter:
   
   
   uses-material-design: true
+  assets:
+    - assets/images/
 
   
   

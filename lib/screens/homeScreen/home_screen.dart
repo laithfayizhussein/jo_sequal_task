@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import '../../controller/favorite_image.dart';
 import '../../router/app_router.gr.dart';
-import '../../style.dart';
+import '../../style/style.dart';
 import 'widget/home_image_card.dart';
 import '../../models/images_model.dart';
 import '../../services/api/wallpaper_api.dart';
@@ -45,7 +46,11 @@ class HomeScreen extends HookConsumerWidget {
         actions: [
           IconButton(
             onPressed: () {
+              //  to make refresh when add image to favorite
+
               context.router.push(const FavoriteRoute());
+              // ignore: unused_result
+              ref.refresh(renderFavoriteImage);
             },
             icon: const Icon(
               Icons.favorite,
@@ -80,7 +85,6 @@ class HomeScreen extends HookConsumerWidget {
                 childAspectRatio: 1.0,
                 crossAxisCount: 2,
                 mainAxisSpacing: 00,
-
               ),
               pagingController: pagingController,
               builderDelegate: PagedChildBuilderDelegate<Photo>(
